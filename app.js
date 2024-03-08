@@ -38,7 +38,7 @@ app.get("/userInfo/:user", (req, res) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Referer: "https://leetcode.com",
+      "Referer": "https://leetcode.com",
     },
     body: JSON.stringify({ query: query, variables: { username: user } }),
   })
