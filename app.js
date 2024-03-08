@@ -33,18 +33,18 @@ app.get("/userInfo/:user", async (req, res) => {
   }
 }`;
   try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Referer: "https://leetcode.com",
-      },
-      body: JSON.stringify({ query: query }),
-    });
-    const result = await response.json();
+    // const response = await fetch(url, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Referer: "https://leetcode.com",
+    //   },
+    //   body: JSON.stringify({ query: query }),
+    // });
+    // const result = await response.json();
 
     res.status(200).json({
-      data: result.data,
+      data: { data: { test: "hello" } }.data,
     });
   } catch (err) {
     res.status(500).json({ message: "err.message" });
