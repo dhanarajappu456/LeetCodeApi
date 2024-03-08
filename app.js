@@ -101,7 +101,7 @@ app.get("/userInfo/:user", async (req, res) => {
       },
     };
     res.status(200).json({
-      data: { data: { test: "hello" } }.data,
+      data: result.data,
     });
   } catch (err) {
     res.status(500).json({ message: "err.message" });
