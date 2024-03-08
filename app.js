@@ -20,7 +20,7 @@ app.get("/userInfo/:user", (req, res) => {
     difficulty
     count
   }
-  matchedUser(username :"${user}") {
+  matchedUser(username :"dan_stark123") {
     problemsSolvedBeatsStats {
       difficulty
       percentage
