@@ -11,7 +11,7 @@ const port = 3000;
 
 app.get("/test", (req, res) => res.send("Test working"));
 
-app.get("/userInfo/:user", (req, res) => {
+app.get("/userInfo/:user", async (req, res) => {
   const url = "https://leetcode.com/graphql";
 
   let query = `{
@@ -32,24 +32,40 @@ app.get("/userInfo/:user", (req, res) => {
     }
   }
 }`;
-
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Referer: "https://leetcode.com",
-    },
-    body: JSON.stringify({ query: query }),
-  })
-    .then((result) => result.json())
-    .then((result) => {
-      res.status(200).json({
-        data: result.data,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({ message: "err.message" });
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Referer: "https://leetcode.com",
+      },
+      body: JSON.stringify({ query: query }),
     });
+    const result = await response.json();
+
+    res.status(200).json({
+      data: result.data,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "err.message" });
+  }
+  // const response = await fetch(url, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Referer: "https://leetcode.com",
+  //   },
+  //   body: JSON.stringify({ query: query }),
+  // })
+  // .then((result) => result.json())
+  // .then((result) => {
+  //   res.status(200).json({
+  //     data: result.data,
+  //   });
+  // })
+  // .catch((err) => {
+  //   res.status(500).json({ message: "err.message" });
+  // });
 });
 
 // axios.post(url)
