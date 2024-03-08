@@ -8,14 +8,15 @@ const port = 3000;
 app.get("/test", (req, res) => res.send("Test working"));
 
 app.get("/userInfo/:user", (req, res) => {
+  const user = String(req.params.user);
   const url = "https://leetcode.com/graphql";
-  console.log("data", req.params.user);
+  console.log("data", user);
   let query = `{
   allQuestionsCount {
     difficulty
     count
   }
-  matchedUser(username: "dan_stark123") {
+  matchedUser(username :"${user}") {
     problemsSolvedBeatsStats {
       difficulty
       percentage
@@ -35,7 +36,7 @@ app.get("/userInfo/:user", (req, res) => {
       "Content-Type": "application/json",
       Referer: "https://leetcode.com",
     },
-    body: JSON.stringify({ query: query }),
+    body: JSON.stringify({ query: query, variables: { username: user } }),
   })
     .then((result) => result.json())
     .then((result) => {
