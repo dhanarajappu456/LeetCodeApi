@@ -49,7 +49,10 @@ app.get("/userInfo/:user", (req, res) => {
         data: result.data,
       });
     })
-    .catch((err) => console.log("err", err));
+    .catch((err) => {
+      console.log("err", err);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 // axios.post(url)
