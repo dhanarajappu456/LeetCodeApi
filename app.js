@@ -42,7 +42,64 @@ app.get("/userInfo/:user", async (req, res) => {
     //   body: JSON.stringify({ query: query }),
     // });
     // const result = await response.json();
-
+    result = {
+      data: {
+        allQuestionsCount: [
+          {
+            difficulty: "All",
+            count: 3073,
+          },
+          {
+            difficulty: "Easy",
+            count: 778,
+          },
+          {
+            difficulty: "Medium",
+            count: 1613,
+          },
+          {
+            difficulty: "Hard",
+            count: 682,
+          },
+        ],
+        matchedUser: {
+          problemsSolvedBeatsStats: [
+            {
+              difficulty: "Easy",
+              percentage: 98.71,
+            },
+            {
+              difficulty: "Medium",
+              percentage: 98.98,
+            },
+            {
+              difficulty: "Hard",
+              percentage: 98.16,
+            },
+          ],
+          submitStatsGlobal: {
+            acSubmissionNum: [
+              {
+                difficulty: "All",
+                count: 770,
+              },
+              {
+                difficulty: "Easy",
+                count: 228,
+              },
+              {
+                difficulty: "Medium",
+                count: 428,
+              },
+              {
+                difficulty: "Hard",
+                count: 114,
+              },
+            ],
+          },
+        },
+      },
+    };
     res.status(200).json({
       data: { data: { test: "hello" } }.data,
     });
