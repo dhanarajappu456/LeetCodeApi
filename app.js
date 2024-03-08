@@ -51,7 +51,7 @@ app.get("/userInfo/:user", (req, res) => {
     })
     .catch((err) => {
       console.log("err", err);
-      res.status(500).json({ message: "hello" });
+      res.status(500).json({ message: err.json() });
     });
 });
 
