@@ -38,7 +38,7 @@ app.get("/userInfo/:user", (req, res) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Referer": "https://leetcode.com",
+      Referer: "https://leetcode.com",
     },
     body: JSON.stringify({ query: query, variables: { username: user } }),
   })
@@ -51,7 +51,7 @@ app.get("/userInfo/:user", (req, res) => {
     })
     .catch((err) => {
       console.log("err", err);
-      res.status(500).json({ message: err.message });
+      res.status(500).json({ message: "hello" });
     });
 });
 
