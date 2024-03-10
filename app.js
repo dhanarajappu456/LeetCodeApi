@@ -122,7 +122,7 @@ app.get("/userInfo/:user", async (req, res) => {
       });
     })
     .catch((err) => {
-      res.status(500).json({ message: "err.message" });
+      res.status(500).json({ message: err.message ,message1:err.json()});
     });
 });
 
