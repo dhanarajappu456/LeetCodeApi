@@ -140,7 +140,7 @@ app.get("/meal", async (req, res) => {
     }
   )
     .then((result) => {
-      console.log("one");
+      console.log("one",result);
 
       return result.json();
     })
