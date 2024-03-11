@@ -112,12 +112,12 @@ app.get("/userInfo/:user", async (req, res) => {
     body: JSON.stringify({ query: query }),
   })
     .then((result) => {
-      console.log("one");
+      console.log("one",result);
 
       return result.json();
     })
     .then((result) => {
-      console.log("two");
+      console.log("two",result);
       res.status(200).json({
         data: result.data,
       });
