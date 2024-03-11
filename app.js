@@ -171,4 +171,6 @@ app.get("/meal", async (req, res) => {
     });
 });
 
-app.listen(port, () => console.log(`Express app running on port ${port}!`));
+app.listen(port, "localhost", () =>
+  console.log(`Express app running on port ${port}!`)
+);
