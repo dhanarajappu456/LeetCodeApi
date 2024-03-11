@@ -3,8 +3,8 @@ const app = express();
 
 const cors = require("cors");
 
-//const axios = require("./axios");
 const port = 3000;
+
 app.use(cors());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "https://blog-guxz.vercel.app");
@@ -19,6 +19,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 });
+
 app.get("/test", (req, res) => res.send("Test working"));
 
 app.get("/userInfo/:user", async (req, res) => {
@@ -131,6 +132,7 @@ app.get("/userInfo/:user", async (req, res) => {
     })
     .then((result) => {
       console.log("two", result);
+
       res.status(200).json({
         data: result.data,
       });
