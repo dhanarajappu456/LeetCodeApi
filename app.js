@@ -1,16 +1,13 @@
 const express = require("express");
 const app = express();
+const axios = require("axios");
+
 const cors = require("cors");
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+
 //const axios = require("./axios");
 const port = 3000;
-
+// app.use(cors());
 app.get("/test", (req, res) => res.send("Test working"));
-
 
 app.get("/userInfo/:user", async (req, res) => {
   const url = "https://leetcode.com/graphql";
@@ -115,18 +112,22 @@ app.get("/userInfo/:user", async (req, res) => {
     },
     body: JSON.stringify({ query: query }),
   })
-    .then((result) => result.json())
     .then((result) => {
+      console.log("one");
+
+      return result.json();
+    })
+    .then((result) => {
+      console.log("two");
       res.status(200).json({
         data: result.data,
       });
+      console.log("four");
     })
     .catch((err) => {
-      console.log(err)
-      res.status(500).json({ message: "err"});
-      
+      console.log(err);
+      res.status(500).json({ message: "err" });
     });
 });
-
 
 app.listen(port, () => console.log(`Express app running on port ${port}!`));
