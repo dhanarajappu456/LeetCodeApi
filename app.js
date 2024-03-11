@@ -121,7 +121,7 @@ app.get("/userInfo/:user", async (req, res) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Referer: "https://leetcode.com",
+      Origin: "https://leetcode.com",
     },
     body: JSON.stringify({ query: query }),
   })
