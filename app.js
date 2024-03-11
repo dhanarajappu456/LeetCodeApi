@@ -127,14 +127,13 @@ app.get("/userInfo/:user", async (req, res) => {
   })
     .then((result) => {
       console.log("one", result);
-
-      return result.json();
+      return result.text();
     })
     .then((result) => {
       console.log("two", result);
-
+      const data = JSON.parse(result);
       res.status(200).json({
-        data: result.data,
+        data: data.data,
       });
       console.log("four");
     })
