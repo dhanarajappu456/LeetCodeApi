@@ -150,6 +150,7 @@ app.get("/meal", async (req, res) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Referer: "https://leetcode.com/dan_stark123/",
       },
     }
   )
