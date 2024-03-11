@@ -129,4 +129,32 @@ app.get("/userInfo/:user", async (req, res) => {
     });
 });
 
+app.get("/meal", async (req, res) => {
+  const response = await fetch(
+    "https://www.themealdb.com/api/json/v1/1/categories.php",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((result) => {
+      console.log("one");
+
+      return result.json();
+    })
+    .then((result) => {
+      console.log("two", result);
+      res.status(200).json({
+        data: result,
+      });
+      console.log("four");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "err" });
+    });
+});
+
 app.listen(port, () => console.log(`Express app running on port ${port}!`));
