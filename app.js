@@ -59,19 +59,19 @@ app.get("/userInfo/:user", async (req, res) => {
         allQuestionsCount: [
           {
             difficulty: "All",
-            count: 3073,
+            count: 3422,
           },
           {
             difficulty: "Easy",
-            count: 778,
+            count: 850,
           },
           {
             difficulty: "Medium",
-            count: 1613,
+            count: 1783,
           },
           {
             difficulty: "Hard",
-            count: 682,
+            count: 789,
           },
         ],
         matchedUser: {
@@ -93,19 +93,19 @@ app.get("/userInfo/:user", async (req, res) => {
             acSubmissionNum: [
               {
                 difficulty: "All",
-                count: 770,
+                count: 1021,
               },
               {
                 difficulty: "Easy",
-                count: 228,
+                count: 284,
               },
               {
                 difficulty: "Medium",
-                count: 428,
+                count: 588,
               },
               {
                 difficulty: "Hard",
-                count: 114,
+                count: 149,
               },
             ],
           },
