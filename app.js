@@ -1,54 +1,115 @@
-const express = require('express');
-const fetch = require('node-fetch');
+const express = require("express");
 const app = express();
+
+const cors = require("cors");
+
 const port = 3000;
 
-const url = 'https://leetcode.com/graphql';
+app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
 
-app.get('/userInfo/:user', async (req, res) => {
-  const username = req.params.user;
+app.get("/test", (req, res) => res.send("Test working"));
 
-  const query = `{
-    matchedUser(username: "${username}") {
-      username
-      submitStats: submitStatsGlobal {
-        acSubmissionNum {
-          difficulty
-          count
-          submissions
-        }
+app.get("/userInfo/:user", async (req, res) => {
+  const url = "https://leetcode.com/graphql";
+
+  let query = `{
+  allQuestionsCount {
+    difficulty
+    count
+  }
+  matchedUser(username :"dan_stark123") {
+    problemsSolvedBeatsStats {
+      difficulty
+      percentage
+    }
+    submitStatsGlobal {
+      acSubmissionNum {
+        difficulty
+        count
       }
     }
-  }`;
-
-try {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ query }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
   }
+}`;
 
-  const data = await response.json();
-
-  if (data.errors) {
-    throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+  try {
+    result = {
+      data: {
+        allQuestionsCount: [
+          {
+            difficulty: "All",
+            count: 3422,
+          },
+          {
+            difficulty: "Easy",
+            count: 850,
+          },
+          {
+            difficulty: "Medium",
+            count: 1783,
+          },
+          {
+            difficulty: "Hard",
+            count: 789,
+          },
+        ],
+        matchedUser: {
+          problemsSolvedBeatsStats: [
+            {
+              difficulty: "Easy",
+              percentage: 98.71,
+            },
+            {
+              difficulty: "Medium",
+              percentage: 98.98,
+            },
+            {
+              difficulty: "Hard",
+              percentage: 98.16,
+            },
+          ],
+          submitStatsGlobal: {
+            acSubmissionNum: [
+              {
+                difficulty: "All",
+                count: 1021,
+              },
+              {
+                difficulty: "Easy",
+                count: 284,
+              },
+              {
+                difficulty: "Medium",
+                count: 588,
+              },
+              {
+                difficulty: "Hard",
+                count: 149,
+              },
+            ],
+          },
+        },
+      },
+    };
+    res.status(200).json({
+      data: result.data,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "err.message" });
   }
-
-  res.json(data);
-} catch (error) {
-  console.error('Error fetching data:', error);
-  res.status(500).json({ error: error.message });
-}
-
+  
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+app.listen(port, () => console.log(`Express app running on port ${port}!`));
