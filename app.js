@@ -22,94 +22,24 @@ app.use((req, res, next) => {
 
 app.get("/test", (req, res) => res.send("Test working"));
 
-app.get("/userInfo/:user", async (req, res) => {
-  const url = "https://leetcode.com/graphql";
-
-  let query = `{
-  allQuestionsCount {
-    difficulty
-    count
-  }
-  matchedUser(username :"dan_stark123") {
-    problemsSolvedBeatsStats {
-      difficulty
-      percentage
-    }
-    submitStatsGlobal {
-      acSubmissionNum {
-        difficulty
-        count
-      }
-    }
-  }
-}`;
+app.get('/userInfo/:user', async (req, res) => {
+  const username = req.params.user;
+  const url = `https://leetcode-api-faisalshohag.vercel.app/${username}`;
 
   try {
-    result = {
-      data: {
-        allQuestionsCount: [
-          {
-            difficulty: "All",
-            count: 3422,
-          },
-          {
-            difficulty: "Easy",
-            count: 850,
-          },
-          {
-            difficulty: "Medium",
-            count: 1783,
-          },
-          {
-            difficulty: "Hard",
-            count: 789,
-          },
-        ],
-        matchedUser: {
-          problemsSolvedBeatsStats: [
-            {
-              difficulty: "Easy",
-              percentage: 98.71,
-            },
-            {
-              difficulty: "Medium",
-              percentage: 98.98,
-            },
-            {
-              difficulty: "Hard",
-              percentage: 98.16,
-            },
-          ],
-          submitStatsGlobal: {
-            acSubmissionNum: [
-              {
-                difficulty: "All",
-                count: 1021,
-              },
-              {
-                difficulty: "Easy",
-                count: 284,
-              },
-              {
-                difficulty: "Medium",
-                count: 588,
-              },
-              {
-                difficulty: "Hard",
-                count: 149,
-              },
-            ],
-          },
-        },
-      },
-    };
-    res.status(200).json({
-      data: result.data,
-    });
-  } catch (err) {
-    res.status(500).json({ message: "err.message" });
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Failed to fetch user info' });
   }
-  
 });
+
 
 app.listen(port, () => console.log(`Express app running on port ${port}!`));
