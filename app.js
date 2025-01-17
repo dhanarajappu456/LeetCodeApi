@@ -1,176 +1,47 @@
-const express = require("express");
+const express = require('express');
+const fetch = require('node-fetch');
 const app = express();
-
-const cors = require("cors");
-
 const port = 3000;
 
-app.use(cors());
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+const url = 'https://leetcode.com/graphql';
 
-app.get("/test", (req, res) => res.send("Test working"));
+app.get('/userInfo/:user', async (req, res) => {
+  const username = req.params.user;
 
-app.get("/userInfo/:user", async (req, res) => {
-  const url = "https://leetcode.com/graphql";
-
-  let query = `{
-  allQuestionsCount {
-    difficulty
-    count
-  }
-  matchedUser(username :"dan_stark123") {
-    problemsSolvedBeatsStats {
-      difficulty
-      percentage
-    }
-    submitStatsGlobal {
-      acSubmissionNum {
-        difficulty
-        count
+  const query = `{
+    matchedUser(username: "${username}") {
+      username
+      submitStats: submitStatsGlobal {
+        acSubmissionNum {
+          difficulty
+          count
+          submissions
+        }
       }
     }
-  }
-}`;
-  // try {
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Referer: "https://leetcode.com",
-  //     },
-  //     body: JSON.stringify({ query: query }),
-  //   });
-  //   const result = await response.json();
+  }`;
+
   try {
-    result = {
-      data: {
-        allQuestionsCount: [
-          {
-            difficulty: "All",
-            count: 3422,
-          },
-          {
-            difficulty: "Easy",
-            count: 850,
-          },
-          {
-            difficulty: "Medium",
-            count: 1783,
-          },
-          {
-            difficulty: "Hard",
-            count: 789,
-          },
-        ],
-        matchedUser: {
-          problemsSolvedBeatsStats: [
-            {
-              difficulty: "Easy",
-              percentage: 98.71,
-            },
-            {
-              difficulty: "Medium",
-              percentage: 98.98,
-            },
-            {
-              difficulty: "Hard",
-              percentage: 98.16,
-            },
-          ],
-          submitStatsGlobal: {
-            acSubmissionNum: [
-              {
-                difficulty: "All",
-                count: 1021,
-              },
-              {
-                difficulty: "Easy",
-                count: 284,
-              },
-              {
-                difficulty: "Medium",
-                count: 588,
-              },
-              {
-                difficulty: "Hard",
-                count: 149,
-              },
-            ],
-          },
-        },
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    };
-    res.status(200).json({
-      data: result.data,
+      body: JSON.stringify({ query }),
     });
-  } catch (err) {
-    res.status(500).json({ message: "err.message" });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Failed to fetch user info' });
   }
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Referer: "https://leetcode.com/dan_stark123/",
-  //     },
-  //     body: JSON.stringify({ query: query }),
-  //   })
-  //     .then((result) => {
-  //       console.log("one", result);
-  //       return result.text();
-  //     })
-  //     .then((result) => {
-  //       console.log("two", result);
-  //       const data = JSON.parse(result);
-  //       res.status(200).json({
-  //         data: data.data,
-  //       });
-  //       console.log("four");
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       res.status(500).json({ message: "err" });
-  //     });
-  // });
-
-  // app.get("/meal", async (req, res) => {
-  //   const response = await fetch(
-  //     "https://www.themealdb.com/api/json/v1/1/categories.php",
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Referer: "https://leetcode.com/dan_stark123/",
-  //       },
-  //     }
-  //   )
-  //     .then((result) => {
-  //       console.log("one", result);
-
-  //       return result.json();
-  //     })
-  //     .then((result) => {
-  //       console.log("two", result);
-  //       res.status(200).json({
-  //         data: result,
-  //       });
-  //       console.log("four");
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       res.status(500).json({ message: "err" });
-  //     });
 });
 
-app.listen(port, () => console.log(`Express app running on port ${port}!`));
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
